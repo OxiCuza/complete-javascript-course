@@ -12,17 +12,34 @@ GAME RULES:
 let roundScore, scores, activePlayer;
 
 roundScore = 0;
-scores = []
+scores = [];
 activePlayer = 0;
 
 // document.querySelector(`#current-${activePlayer}`).textContent = dice;
-const diceDOM = document.querySelector('.dice')
+const diceDOM = document.querySelector(".dice");
+const player0 = document.querySelector('.player-0-panel');
+const player1 = document.querySelector('.player-1-panel');
 
-diceDOM.style.display = 'none';
+diceDOM.style.display = "none";
 
-document.querySelector('.btn-roll').addEventListener('click', function(){
-    let diceValue = Math.floor(Math.random() * 6) + 1;
+document.querySelector(".btn-roll").addEventListener("click", function () {
+	let diceValue = Math.floor(Math.random() * 6) + 1;
 
-    diceDOM.src = `dice-${diceValue}.png`;
-    diceDOM.style.display = 'block';
+	if (diceValue !== 1) {
+		diceDOM.src = `dice-${diceValue}.png`;
+		diceDOM.style.display = "block";
+		roundScore += diceValue;
+		document.getElementById(
+			`current-${activePlayer}`
+		).textContent = roundScore;
+	} else {
+		roundScore = 0;
+		document.getElementById(
+			`current-${activePlayer}`
+		).textContent = roundScore;
+		diceDOM.style.display = "none";
+        activePlayer === 0 ? (activePlayer = 1) : (activePlayer = 0);
+        player0.classList.toggle('active');
+        player1.classList.toggle('active');
+	}
 });
