@@ -41,7 +41,20 @@ document.querySelector(".btn-hold").addEventListener("click", function () {
 	scores[activePlayer] += roundScore;
 	document.getElementById(`score-${activePlayer}`).textContent =
 		scores[activePlayer];
-	nextPlayer();
+	if (scores[activePlayer] >= 20) {
+		document.getElementById(`current-${activePlayer}`).textContent = 0;
+		document.getElementById(`name-${activePlayer}`).textContent =
+			"Winner !!!";
+		document
+			.querySelector(`.player-${activePlayer}-panel`)
+			.classList.remove("active");
+		document
+			.querySelector(`.player-${activePlayer}-panel`)
+			.classList.add("winner");
+		diceDOM.style.display = "none";
+	} else {
+		nextPlayer();
+	}
 });
 
 function nextPlayer() {
