@@ -10,17 +10,17 @@ GAME RULES:
 */
 
 let roundScore, scores, activePlayer;
-
-roundScore = 0;
-scores = [0, 0];
-activePlayer = 0;
-
-// document.querySelector(`#current-${activePlayer}`).textContent = dice;
 const diceDOM = document.querySelector(".dice");
 const player0 = document.querySelector(".player-0-panel");
 const player1 = document.querySelector(".player-1-panel");
+const name0 = document.getElementById("name-0");
+const name1 = document.getElementById("name-1");
+const current0 = document.getElementById("current-0");
+const current1 = document.getElementById("current-1");
+const score0 = document.getElementById("score-0");
+const score1 = document.getElementById("score-1");
 
-diceDOM.style.display = "none";
+init();
 
 document.querySelector(".btn-roll").addEventListener("click", function () {
 	let diceValue = Math.floor(Math.random() * 6) + 1;
@@ -56,6 +56,27 @@ document.querySelector(".btn-hold").addEventListener("click", function () {
 		nextPlayer();
 	}
 });
+
+document.querySelector(".btn-new").addEventListener("click", init);
+
+function init() {
+	roundScore = 0;
+	scores = [0, 0];
+	activePlayer = 0;
+
+	player0.classList.remove("winner");
+	player1.classList.remove("winner");
+	player0.classList.add("active");
+	name0.classList.remove("active");
+	name1.classList.remove("active");
+	name0.textContent = "Player 1";
+	name1.textContent = "Player 2";
+	score0.textContent = "0";
+	score1.textContent = "0";
+	current0.textContent = "0";
+	current1.textContent = "0";
+	diceDOM.style.display = "none";
+}
 
 function nextPlayer() {
 	roundScore = 0;
