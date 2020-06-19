@@ -9,7 +9,7 @@ GAME RULES:
 
 */
 
-let roundScore, scores, activePlayer;
+let roundScore, scores, activePlayer, statePlaying;
 const diceDOM = document.querySelector(".dice");
 const player0 = document.querySelector(".player-0-panel");
 const player1 = document.querySelector(".player-1-panel");
@@ -23,37 +23,44 @@ const score1 = document.getElementById("score-1");
 init();
 
 document.querySelector(".btn-roll").addEventListener("click", function () {
-	let diceValue = Math.floor(Math.random() * 6) + 1;
+	if (statePlaying) {
+		let diceValue = Math.floor(Math.random() * 6) + 1;
 
-	if (diceValue !== 1) {
-		diceDOM.src = `dice-${diceValue}.png`;
-		diceDOM.style.display = "block";
-		roundScore += diceValue;
-		document.getElementById(
-			`current-${activePlayer}`
-		).textContent = roundScore;
-	} else {
-		nextPlayer();
+		if (diceValue !== 1) {
+			diceDOM.src = `dice-${diceValue}.png`;
+			diceDOM.style.display = "block";
+			roundScore += diceValue;
+			document.getElementById(
+				`current-${activePlayer}`
+			).textContent = roundScore;
+		} else {
+			nextPlayer();
+		}
 	}
 });
 
 document.querySelector(".btn-hold").addEventListener("click", function () {
-	scores[activePlayer] += roundScore;
-	document.getElementById(`score-${activePlayer}`).textContent =
-		scores[activePlayer];
-	if (scores[activePlayer] >= 20) {
-		document.getElementById(`current-${activePlayer}`).textContent = 0;
-		document.getElementById(`name-${activePlayer}`).textContent =
-			"Winner !!!";
-		document
-			.querySelector(`.player-${activePlayer}-panel`)
-			.classList.remove("active");
-		document
-			.querySelector(`.player-${activePlayer}-panel`)
-			.classList.add("winner");
-		diceDOM.style.display = "none";
-	} else {
-		nextPlayer();
+	if (statePlaying) {
+		scores[activePlayer] += roundScore;
+		document.getElementById(`score-${activePlayer}`).textContent =
+			scores[activePlayer];
+		if (scores[activePlayer] >= 20) {
+			document.getElementById(
+				`current-${activePlayer}`
+			).textContent = 0;
+			document.getElementById(`name-${activePlayer}`).textContent =
+				"Winner !!!";
+			document
+				.querySelector(`.player-${activePlayer}-panel`)
+				.classList.remove("active");
+			document
+				.querySelector(`.player-${activePlayer}-panel`)
+				.classList.add("winner");
+			diceDOM.style.display = "none";
+			statePlaying = false;
+		} else {
+			nextPlayer();
+		}
 	}
 });
 
@@ -63,12 +70,13 @@ function init() {
 	roundScore = 0;
 	scores = [0, 0];
 	activePlayer = 0;
+	statePlaying = true;
 
 	player0.classList.remove("winner");
 	player1.classList.remove("winner");
+	player0.classList.remove("active");
+	player1.classList.remove("active");
 	player0.classList.add("active");
-	name0.classList.remove("active");
-	name1.classList.remove("active");
 	name0.textContent = "Player 1";
 	name1.textContent = "Player 2";
 	score0.textContent = "0";
