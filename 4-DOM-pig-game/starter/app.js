@@ -25,8 +25,8 @@ init();
 
 document.querySelector(".btn-roll").addEventListener("click", function () {
 	if (statePlaying) {
-		let diceValue1 = 6;
-		let diceValue2 = 6;
+		let diceValue1 = Math.floor(Math.random() * 6) + 1;
+		let diceValue2 = Math.floor(Math.random() * 6) + 1;
 		let sumDiceValue = diceValue1 + diceValue2;
 
 		if (lastDice % 12 === 0 && sumDiceValue % 12 === 0) {
@@ -53,10 +53,16 @@ document.querySelector(".btn-roll").addEventListener("click", function () {
 
 document.querySelector(".btn-hold").addEventListener("click", function () {
 	if (statePlaying) {
+		let winningScore = document.getElementById("final-score").value;
 		scores[activePlayer] += roundScore;
 		document.getElementById(`score-${activePlayer}`).textContent =
 			scores[activePlayer];
-		if (scores[activePlayer] >= 100) {
+
+		if (!winningScore) {
+			winningScore = 100;
+		}
+
+		if (scores[activePlayer] >= winningScore) {
 			document.getElementById(
 				`current-${activePlayer}`
 			).textContent = 0;
@@ -68,7 +74,8 @@ document.querySelector(".btn-hold").addEventListener("click", function () {
 			document
 				.querySelector(`.player-${activePlayer}-panel`)
 				.classList.add("winner");
-			diceDOM.style.display = "none";
+			diceDOM1.style.display = "none";
+			diceDOM2.style.display = "none";
 			statePlaying = false;
 		} else {
 			nextPlayer();
@@ -102,7 +109,6 @@ function init() {
 function nextPlayer() {
 	roundScore = 0;
 	lastDice = undefined;
-	console.log(lastDice);
 	document.getElementById(
 		`current-${activePlayer}`
 	).textContent = roundScore;

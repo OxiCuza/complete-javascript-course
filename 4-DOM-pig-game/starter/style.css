@@ -45,6 +45,16 @@ body {
     padding: 100px;
 }
 
+.final-score {
+    position: absolute;
+    transform: translateX(-50%);
+    left: 50%;
+    top: 525px;
+    height: 30px;
+    width: 125px;
+    text-align: center;
+}
+
 
 
 /**********************************************
