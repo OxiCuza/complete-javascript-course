@@ -1,5 +1,24 @@
 // BUDGET CONTROLLER
-let BudgetController = (function () {})();
+let BudgetController = (function () {
+	let Expense = function (id, description, value) {
+		(this.id = id), (this.desc = description), (this.val = value);
+	};
+
+	let Income = function (id, description, value) {
+		(this.id = id), (this.desc = description), (this.val = value);
+	};
+
+	let data = {
+		allItems: {
+			exp: [],
+			inc: [],
+		},
+		totals: {
+			exp: 0,
+			inc: 0,
+		},
+	};
+})();
 
 // UI CONTROLLER
 let UIController = (function () {
