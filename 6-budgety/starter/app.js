@@ -59,7 +59,9 @@ let UIController = (function () {
 			return {
 				type: document.querySelector(DOMStr.inputType).value,
 				desc: document.querySelector(DOMStr.inputDesc).value,
-				value: document.querySelector(DOMStr.inputValue).value,
+				value: parseFloat(
+					document.querySelector(DOMStr.inputValue).value
+				),
 			};
 		},
 		getDOMStr: function () {
@@ -87,7 +89,7 @@ let UIController = (function () {
 				.insertAdjacentHTML("beforeend", newHTML);
 		},
 		clearFields: function () {
-			let DOMInput, DOMInputArr;
+			let DOMInput;
 
 			DOMInput = document.querySelectorAll(
 				DOMStr.inputDesc + ", " + DOMStr.inputValue
@@ -117,10 +119,14 @@ let Controller = (function (bdgtCtrl, uiCtrl) {
 	};
 
 	let addItem = function () {
-		let input = uiCtrl.getInput();
-		let item = bdgtCtrl.addItem(input.type, input.desc, input.value);
-		uiCtrl.addListItem(item, input.type);
-		uiCtrl.clearFields();
+		let input, item;
+
+		input = uiCtrl.getInput();
+		if (input.desc !== "" && !isNaN(input.value) && input.value > 0) {
+			item = bdgtCtrl.addItem(input.type, input.desc, input.value);
+			uiCtrl.addListItem(item, input.type);
+			uiCtrl.clearFields();
+		}
 	};
 
 	return {
