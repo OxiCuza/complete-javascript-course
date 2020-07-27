@@ -32,7 +32,7 @@ let BudgetController = (function () {
 			}
 
 			if (types === "exp") {
-				newItem = new Expense(ID, description.value);
+				newItem = new Expense(ID, description, value);
 			} else {
 				newItem = new Income(ID, description, value);
 			}
@@ -46,10 +46,12 @@ let BudgetController = (function () {
 // UI CONTROLLER
 let UIController = (function () {
 	let DOMStr = {
-		inputType: "add__type",
-		inputDesc: "add__description",
-		inputValue: "add__value",
-		inputBtn: "add_btn",
+		inputType: ".add__type",
+		inputDesc: ".add__description",
+		inputValue: ".add__value",
+		inputBtn: ".add__btn",
+		outputExp: ".expenses__list",
+		outputInc: ".income__list",
 	};
 
 	return {
@@ -62,6 +64,25 @@ let UIController = (function () {
 		},
 		getDOMStr: function () {
 			return DOMStr;
+		},
+		addListItem: function (obj, type) {
+			let html, element;
+
+			if (type == "inc") {
+				element = DOMStr.outputInc;
+				html =
+					'<div class="item clearfix" id="income-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
+			} else {
+				element = DOMStr.outputExp;
+				html =
+					'<div class="item clearfix" id="expense-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">- %value%</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
+			}
+
+			newHTML = html.replace('%id%', obj.id);
+			newHTML = newHTML.replace('%description%', obj.desc);
+			newHTML = newHTML.replace('%value%', obj.val);
+
+			document.querySelector(element).insertAdjacentHTML('beforeend', newHTML);
 		},
 	};
 })();
@@ -83,10 +104,12 @@ let Controller = (function (bdgtCtrl, uiCtrl) {
 	let addItem = function () {
 		let input = uiCtrl.getInput();
 		let item = bdgtCtrl.addItem(input.type, input.desc, input.value);
+		uiCtrl.addListItem(item, input.type);
 	};
 
 	return {
 		init: function () {
+			console.log("Application started !!");
 			setupEventListeners();
 		},
 	};
