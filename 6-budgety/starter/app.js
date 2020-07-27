@@ -78,11 +78,26 @@ let UIController = (function () {
 					'<div class="item clearfix" id="expense-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">- %value%</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
 			}
 
-			newHTML = html.replace('%id%', obj.id);
-			newHTML = newHTML.replace('%description%', obj.desc);
-			newHTML = newHTML.replace('%value%', obj.val);
+			newHTML = html.replace("%id%", obj.id);
+			newHTML = newHTML.replace("%description%", obj.desc);
+			newHTML = newHTML.replace("%value%", obj.val);
 
-			document.querySelector(element).insertAdjacentHTML('beforeend', newHTML);
+			document
+				.querySelector(element)
+				.insertAdjacentHTML("beforeend", newHTML);
+		},
+		clearFields: function () {
+			let DOMInput, DOMInputArr;
+
+			DOMInput = document.querySelectorAll(
+				DOMStr.inputDesc + ", " + DOMStr.inputValue
+			);
+
+			DOMInput.forEach(function (current) {
+				current.value = "";
+			});
+
+			DOMInput[0].focus();
 		},
 	};
 })();
@@ -105,6 +120,7 @@ let Controller = (function (bdgtCtrl, uiCtrl) {
 		let input = uiCtrl.getInput();
 		let item = bdgtCtrl.addItem(input.type, input.desc, input.value);
 		uiCtrl.addListItem(item, input.type);
+		uiCtrl.clearFields();
 	};
 
 	return {
