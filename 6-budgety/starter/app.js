@@ -61,6 +61,19 @@ let BudgetController = (function () {
 			data.allItems[types].push(newItem);
 			return newItem;
 		},
+		deleteBudget: function (type, id) {
+			let idArr, index;
+
+			idArr = data.allItems[type].map(function (current) {
+				return current.id;
+			});
+			index = idArr.indexOf(id);
+
+			if(index != -1){
+				data.allItems[type].splice(index, 1);
+			};
+
+		},
 		calculateBudget: function () {
 			calculate("inc");
 			calculate("exp");
@@ -207,7 +220,9 @@ let Controller = (function (bdgtCtrl, uiCtrl) {
 		if (elementID) {
 			splitID = elementID.split('-');
 			type = splitID[0];
-			ID = splitID[1];
+			ID = pareInt(splitID[1]);
+
+			bdgtCtrl.deleteBudget(type, ID);
 		}
 
 	}
