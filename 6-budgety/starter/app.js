@@ -77,7 +77,6 @@ let BudgetController = (function () {
 		calculateBudget: function () {
 			calculate("inc");
 			calculate("exp");
-			console.log(data);
 		},
 		getData: function () {
 			return {
@@ -170,6 +169,12 @@ let UIController = (function () {
 				).textContent = "--";
 			}
 		},
+		deleteListItem: function (elementID) {
+			let element = document.getElementById(elementID);
+
+			element.parentNode.removeChild(element);
+			
+		}
 	};
 })();
 
@@ -220,9 +225,11 @@ let Controller = (function (bdgtCtrl, uiCtrl) {
 		if (elementID) {
 			splitID = elementID.split('-');
 			type = splitID[0];
-			ID = pareInt(splitID[1]);
+			ID = parseInt(splitID[1]);
 
 			bdgtCtrl.deleteBudget(type, ID);
+			uiCtrl.deleteListItem(elementID);
+			updateBudget();
 		}
 
 	}
